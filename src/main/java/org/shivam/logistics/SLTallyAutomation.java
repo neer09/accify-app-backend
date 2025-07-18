@@ -1,0 +1,11 @@
+package org.shivam.logistics;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class SLTallyAutomation {
+    public static void main(String[] args) {
+        SpringApplication.run(SLTallyAutomation.class, args);
+    }
+}
