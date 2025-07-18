@@ -8,7 +8,7 @@ erpnext:
 
 spring:
   datasource:
-    url: jdbc:postgresql://accify_db_user:Ysdcwk1JLSiKOxpuOkB3L6uD2c8BCyyG@dpg-d1t9oa7fte5s73c5fjs0-a/accify_db
+    url: jdbc:postgresql://dpg-d1t9oa7fte5s73c5fjs0-a.oregon-postgres.render.com:5432/accify_db
     username: accify_db_user
     password: Ysdcwk1JLSiKOxpuOkB3L6uD2c8BCyyG
     #url: jdbc:postgresql://localhost:5432/sltallydb
