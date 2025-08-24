@@ -1,9 +1,9 @@
-package org.shivam.logistics.service;
+package org.accify.service;
 
-import org.shivam.logistics.dto.UserRequest;
-import org.shivam.logistics.dto.LoginRequest;
-import org.shivam.logistics.entity.User;
-import org.shivam.logistics.repo.UserRepository;
+import org.accify.dto.UserRequest;
+import org.accify.dto.LoginRequest;
+import org.accify.entity.User;
+import org.accify.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

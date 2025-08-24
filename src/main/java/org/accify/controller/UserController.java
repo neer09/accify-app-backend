@@ -1,9 +1,9 @@
-package org.shivam.logistics.controller;
+package org.accify.controller;
 
-import org.shivam.logistics.dto.UserRequest;
-import org.shivam.logistics.dto.LoginRequest;
-import org.shivam.logistics.entity.User;
-import org.shivam.logistics.service.UserService;
+import org.accify.dto.UserRequest;
+import org.accify.dto.LoginRequest;
+import org.accify.entity.User;
+import org.accify.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

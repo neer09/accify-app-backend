@@ -1,11 +1,11 @@
-package org.shivam.logistics.controller;
+package org.accify.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.shivam.logistics.dto.BalanceSheet;
-import org.shivam.logistics.dto.LedgerSummary;
-import org.shivam.logistics.dto.ProfitLoss;
-import org.shivam.logistics.dto.TrialBalance;
-import org.shivam.logistics.service.LedgerService;
+import org.accify.dto.BalanceSheet;
+import org.accify.dto.LedgerSummary;
+import org.accify.dto.ProfitLoss;
+import org.accify.dto.TrialBalance;
+import org.accify.service.LedgerService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

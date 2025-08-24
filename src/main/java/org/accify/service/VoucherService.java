@@ -1,7 +1,7 @@
-package org.shivam.logistics.service;
+package org.accify.service;
 
-import org.shivam.logistics.entity.Voucher;
-import org.shivam.logistics.repo.VoucherRepository;
+import org.accify.entity.Voucher;
+import org.accify.repo.VoucherRepository;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
