@@ -1,4 +1,4 @@
-package org.shivam.logistics.entity;
+package org.accify.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

@@ -1,7 +1,7 @@
-package org.shivam.logistics.controller;
+package org.accify.controller;
 
-import org.shivam.logistics.entity.Voucher;
-import org.shivam.logistics.service.VoucherService;
+import org.accify.entity.Voucher;
+import org.accify.service.VoucherService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

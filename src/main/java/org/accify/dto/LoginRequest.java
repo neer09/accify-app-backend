@@ -1,4 +1,4 @@
-package org.shivam.logistics.dto;
+package org.accify.dto;
 
 import lombok.Data;
 

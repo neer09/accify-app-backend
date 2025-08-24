@@ -1,8 +1,8 @@
-package org.shivam.logistics.controller;
+package org.accify.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.shivam.logistics.dto.Consignment;
-import org.shivam.logistics.service.ErpNextService;
+import org.accify.dto.Consignment;
+import org.accify.service.ErpNextService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;

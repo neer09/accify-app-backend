@@ -1,11 +1,11 @@
-package org.shivam.logistics.entity;
+package org.accify.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.shivam.logistics.enums.VoucherType;
+import org.accify.enums.VoucherType;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

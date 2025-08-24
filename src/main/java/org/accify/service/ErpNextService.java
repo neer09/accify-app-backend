@@ -1,8 +1,8 @@
-package org.shivam.logistics.service;
+package org.accify.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.shivam.logistics.dto.Consignment;
+import org.accify.dto.Consignment;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;

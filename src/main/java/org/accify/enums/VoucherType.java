@@ -1,4 +1,4 @@
-package org.shivam.logistics.enums;
+package org.accify.enums;
 
 public enum VoucherType {
     SALES,
