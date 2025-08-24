@@ -1,5 +1,6 @@
 package org.accify.scheduler;
 
+/*
 import jakarta.mail.*;
 import jakarta.mail.search.*;
 import org.accify.entity.Freight;
@@ -15,6 +16,7 @@ import java.io.InputStream;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Properties;
+
 
 @Component
 public class EmailScheduler {
@@ -130,3 +132,4 @@ public class EmailScheduler {
         }
     }
 }
+ */
