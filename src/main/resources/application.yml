@@ -8,8 +8,8 @@ erpnext:
 
 spring:
   datasource:
-    url: jdbc:postgresql://db.regmmgrdzstztrmtkprc.pooler.supabase.com:6543/postgres?sslmode=require
-    username: postgres
+    url: jdbc:postgresql://aws-1-ap-south-1.pooler.supabase.com:5432/postgres?sslmode=require
+    username: postgres.regmmgrdzstztrmtkprc
     password: accify_new_db
     #url: jdbc:postgresql://ep-rapid-frog-afwhl8j2-pooler.c-2.us-west-2.aws.neon.tech/neondb?sslmode=require
     #username: neondb_owner
