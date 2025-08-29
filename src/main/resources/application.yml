@@ -8,9 +8,12 @@ erpnext:
 
 spring:
   datasource:
-    url: jdbc:postgresql://ep-rapid-frog-afwhl8j2-pooler.c-2.us-west-2.aws.neon.tech/neondb?sslmode=require
-    username: neondb_owner
-    password: npg_12wBCUlQvpNc
+    url: jdbc:postgresql://db.regmmgrdzstztrmtkprc.supabase.co:5432/postgres?sslmode=require
+    username: postgres
+    password: accify_new_db
+    #url: jdbc:postgresql://ep-rapid-frog-afwhl8j2-pooler.c-2.us-west-2.aws.neon.tech/neondb?sslmode=require
+    #username: neondb_owner
+    #password: npg_12wBCUlQvpNc
     #url: jdbc:postgresql://localhost:5432/sltallydb
     #username: postgres
     #password: $hiv@m2010
