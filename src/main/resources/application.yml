@@ -8,30 +8,30 @@ erpnext:
 
 spring:
   datasource:
-    url: jdbc:postgresql://aws-1-ap-south-1.pooler.supabase.com:6543/postgres?sslmode=require
-    username: postgres.regmmgrdzstztrmtkprc
-    password: accify_new_db
-    #url: jdbc:postgresql://ep-rapid-frog-afwhl8j2-pooler.c-2.us-west-2.aws.neon.tech/neondb?sslmode=require
-    #username: neondb_owner
-    #password: npg_12wBCUlQvpNc
-    #url: jdbc:postgresql://localhost:5432/sltallydb
-    #username: postgres
-    #password: $hiv@m2010
+#    url: jdbc:postgresql://aws-1-ap-south-1.pooler.supabase.com:6543/postgres?sslmode=require
+#    username: postgres.regmmgrdzstztrmtkprc
+#    password: accify_new_db
+    url: jdbc:postgresql://ep-rapid-frog-afwhl8j2-pooler.c-2.us-west-2.aws.neon.tech/neondb?sslmode=require
+    username: neondb_owner
+    password: npg_12wBCUlQvpNc
+#    url: jdbc:postgresql://localhost:5432/sltallydb
+#    username: postgres
+#    password: $hiv@m2010
     driver-class-name: org.postgresql.Driver
 
-    hikari:
-      maximum-pool-size: 5
-      minimum-idle: 2
-      idle-timeout: 30000
-      max-lifetime: 1800000
-      connection-timeout: 30000
-      leak-detection-threshold: 20000
+#    hikari:
+#      maximum-pool-size: 5
+#      minimum-idle: 2
+#      idle-timeout: 30000
+#      max-lifetime: 1800000
+#      connection-timeout: 30000
+#      leak-detection-threshold: 20000
 
   jpa:
     hibernate:
-      ddl-auto: update  # or validate / none in prod
+      ddl-auto: update
     show-sql: true
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-    open-in-view: false
+#    open-in-view: false
