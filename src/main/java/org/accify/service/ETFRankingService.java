@@ -18,6 +18,7 @@ public class ETFRankingService {
 
     private final ETFRepository etfRepository;
     private final KiteClientWrapper kiteClient;
+    private final KiteAuthService kiteAuthService;
 
     private List<ETF> cachedEtfs = Collections.emptyList();
     private long lastEtfCacheUpdate = 0L;
@@ -26,9 +27,10 @@ public class ETFRankingService {
     // Instrument Token Cache (load at startup)
     private final Map<String, Long> instrumentTokenMap;
 
-    public ETFRankingService(ETFRepository etfRepository, KiteClientWrapper kiteClient) {
+    public ETFRankingService(ETFRepository etfRepository, KiteClientWrapper kiteClient, KiteAuthService kiteAuthService) {
         this.etfRepository = etfRepository;
         this.kiteClient = kiteClient;
+        this.kiteAuthService = kiteAuthService;
         this.instrumentTokenMap = loadInstrumentTokens();
     }
 
@@ -106,7 +108,7 @@ public class ETFRankingService {
     }
 
     private Map<String, Long> loadInstrumentTokens() {
-        return KiteInstrumentCache.getInstance().getInstrumentTokenMap();
+        return KiteInstrumentCache.getInstance(kiteAuthService.getAccessToken()).getInstrumentTokenMap();
     }
 
     private List<ETF> getCachedEtfs() {

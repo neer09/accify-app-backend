@@ -22,29 +22,27 @@ public class KiteInstrumentCache {
 
     private static final long CACHE_REFRESH_INTERVAL_MS = 24 * 60 * 60 * 1000; // 24 hours
     private static final String INSTRUMENTS_URL = "https://api.kite.trade/instruments";
-    private static final String API_KEY = "iwvet4wgrt7akw4i";
-    private static final String ACCESS_TOKEN = "your_access_token";
 
-    private KiteInstrumentCache() {
-        refreshCache();
+    private KiteInstrumentCache(String accessToken) {
+        refreshCache(accessToken);
     }
 
-    public static synchronized KiteInstrumentCache getInstance() {
+    public static synchronized KiteInstrumentCache getInstance(String accessToken) {
         if (instance == null) {
-            instance = new KiteInstrumentCache();
+            instance = new KiteInstrumentCache(accessToken);
         } else if (System.currentTimeMillis() - instance.lastUpdated > CACHE_REFRESH_INTERVAL_MS) {
-            instance.refreshCache();
+            instance.refreshCache(accessToken);
         }
         return instance;
     }
 
-    private void refreshCache() {
+    private void refreshCache(String accessToken) {
         Map<String, Long> tokenMap = new HashMap<>();
         try {
             URL url = new URL(INSTRUMENTS_URL);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
-            conn.setRequestProperty("Authorization", "token " + "iwvet4wgrt7akw4i" + ":" + ACCESS_TOKEN);
+            conn.setRequestProperty("Authorization", "token " + "iwvet4wgrt7akw4i" + ":" + accessToken);
             conn.setRequestProperty("X-Kite-Version", "3");
 
             try (BufferedReader br = new BufferedReader(
