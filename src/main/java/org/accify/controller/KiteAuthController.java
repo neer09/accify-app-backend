@@ -30,4 +30,13 @@ public class KiteAuthController {
         kiteAuthService.generateAndStoreAccessToken(requestToken);
         return "Kite login successful. Access token generated.";
     }
+
+    /**
+     * STEP 3: Redirect user to Zerodha logout
+     */
+    @GetMapping("/kite/logout")
+    public String kiteLogout() {
+        kiteAuthService.clearAccessToken(); // delete from cache
+        return "redirect:https://kite.zerodha.com/connect/logout";
+    }
 }

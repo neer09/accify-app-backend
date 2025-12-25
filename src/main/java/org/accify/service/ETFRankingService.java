@@ -8,6 +8,8 @@ import org.accify.component.KiteClientWrapper;
 import org.accify.dto.ETFRank;
 import org.accify.entity.ETF;
 import org.accify.repo.ETFRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -27,6 +29,8 @@ public class ETFRankingService {
     // Instrument Token Cache (load at startup)
     private final Map<String, Long> instrumentTokenMap;
 
+    private static final Logger log = LoggerFactory.getLogger(ETFRankingService.class);
+
     public ETFRankingService(ETFRepository etfRepository, KiteClientWrapper kiteClient, KiteAuthService kiteAuthService) {
         this.etfRepository = etfRepository;
         this.kiteClient = kiteClient;
@@ -37,14 +41,18 @@ public class ETFRankingService {
     public List<ETFRank> getTop10By20DMA() {
         List<ETFRank> result = new ArrayList<>();
         try {
+            log.info("Fetching all ETFs!");
             List<ETF> etfs = getCachedEtfs(); // use cache
+            log.info("ETF Map size : {}", etfs.size());
 
             List<String> symbols = etfs.stream()
                     .map(e -> e.getExchange() + ":" + e.getTradingSymbol())
                     .toList();
 
             // CMP
+            log.info("Finding CMP for all ETFs!");
             Map<String, LTPQuote> ltpMap = kiteClient.getLtp(symbols);
+            log.info("LTP Map size : {}", ltpMap.size());
 
             for (ETF etf : etfs) {
 
@@ -71,7 +79,7 @@ public class ETFRankingService {
                 );
             }
         } catch (Exception | KiteException e) {
-            // Failed to get Top 10 by 20 DMA
+            log.error("Failed to get Top 10 by 20 DMA", e);
         }
 
         return result.stream()
@@ -102,7 +110,7 @@ public class ETFRankingService {
                     .orElse(0);
 
         } catch (Exception | KiteException e) {
-            // Failed to calculate 20 DMA for token
+            log.error("Failed to calculate 20 DMA for token", e);
             return 0;
         }
     }

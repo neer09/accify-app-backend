@@ -4,6 +4,8 @@ import com.zerodhatech.kiteconnect.KiteConnect;
 import com.zerodhatech.kiteconnect.kitehttp.exceptions.KiteException;
 import com.zerodhatech.models.*;
 import org.accify.service.KiteAuthService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
@@ -14,6 +16,8 @@ public class KiteClientWrapper {
 
     private final KiteConnect kiteConnect;
     private final KiteAuthService kiteAuthService;
+
+    private static final Logger log = LoggerFactory.getLogger(KiteClientWrapper.class);
 
     public KiteClientWrapper(KiteAuthService kiteAuthService) {
         this.kiteAuthService = kiteAuthService;
@@ -27,6 +31,7 @@ public class KiteClientWrapper {
     public Map<String, LTPQuote> getLtp(List<String> symbols) throws Exception, KiteException {
         ensureAccessToken();
         String[] symbolArray = symbols.toArray(new String[0]);
+        log.info("Getting LTP");
         return kiteConnect.getLTP(symbolArray);
     }
 
