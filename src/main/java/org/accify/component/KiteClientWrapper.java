@@ -3,6 +3,7 @@ package org.accify.component;
 import com.zerodhatech.kiteconnect.KiteConnect;
 import com.zerodhatech.kiteconnect.kitehttp.exceptions.KiteException;
 import com.zerodhatech.models.*;
+import org.accify.dto.TradingBalanceResponse;
 import org.accify.service.KiteAuthService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -106,6 +107,16 @@ public class KiteClientWrapper {
         //Place order
         Order order = kiteConnect.placeOrder(params, "regular");
         log.info("ETF BUY placed | Symbol={} | Qty={} | Amount={} | OrderId={}", tradingSymbol, quantity, amount, order.orderId);
+    }
+
+    public TradingBalanceResponse getTradingBalance() throws Exception, KiteException {
+        ensureAccessToken();
+        Margin margin = kiteConnect.getMargins("equity");
+        return TradingBalanceResponse.builder()
+                .availableCash(Double.parseDouble(margin.available.cash))
+                .usedMargin(Double.parseDouble(margin.utilised.debits))
+                .openingBalance(Double.parseDouble(margin.available.liveBalance))
+                .build();
     }
 
     private void ensureAccessToken() {
