@@ -16,7 +16,7 @@ public class ETFAutoSellScheduler {
         this.toggleService = toggleService;
     }
 
-    @Scheduled(cron = "0 30 9,13,14,15 * * MON-FRI", zone = "Asia/Kolkata")
+    @Scheduled(cron = "0 0 13,14,15 * * MON-FRI", zone = "Asia/Kolkata")
     public void run() {
         if (!toggleService.isEnabled()) {
             return; // scheduler disabled
