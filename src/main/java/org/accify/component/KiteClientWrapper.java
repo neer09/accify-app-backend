@@ -54,18 +54,58 @@ public class KiteClientWrapper {
         return kiteConnect.getHoldings();
     }
 
-    public String placeSellOrder(String symbol, int qty) throws Exception, KiteException {
+    public void placeSellOrder(String symbol, int qty) throws Exception, KiteException {
         ensureAccessToken();
-        OrderParams order = new OrderParams();
-        order.tradingsymbol = symbol;
-        order.exchange = "NSE";
-        order.transactionType = "SELL";
-        order.orderType = "MARKET";
-        order.product = "CNC";
-        order.validity = "DAY";
-        order.quantity = qty;
-        log.info("Placing SELL order for {} qty={}", symbol, qty);
-        return kiteConnect.placeOrder(order, "regular").toString();
+
+        //Build order params
+        OrderParams params = new OrderParams();
+        params.tradingsymbol = symbol;
+        params.exchange = "NSE";
+        params.transactionType = "SELL";
+        params.orderType = "MARKET";
+        params.product = "CNC";
+        params.validity = "DAY";
+        params.quantity = qty;
+
+        //Place order
+        Order order = kiteConnect.placeOrder(params, "regular");
+        log.info("ETF SELL placed | Symbol={} | Qty={} | OrderId={}", symbol, qty, order.orderId);
+    }
+
+    public void placeBuyOrder(String tradingSymbol, double amount) throws KiteException, Exception {
+        ensureAccessToken();
+
+        //Initial amount check
+        if (amount <= 0) {
+            log.info("Amount is zero. No buy allowed!");
+            return;
+        }
+
+        //Fetch LTP
+        String instrument = "NSE:" + tradingSymbol;
+        Map<String, LTPQuote> ltpMap = kiteConnect.getLTP(new String[]{instrument});
+        double ltp = ltpMap.get(instrument).lastPrice;
+
+        //Calculate quantity
+        int quantity = (int) (amount / ltp);
+        if (quantity <= 0) {
+            log.info("Amount too low to buy 1 unit. LTP={}", ltp);
+            return;
+        }
+
+        //Build order params
+        OrderParams params = new OrderParams();
+        params.exchange = "NSE";
+        params.tradingsymbol = tradingSymbol;
+        params.transactionType = "BUY";
+        params.quantity = quantity;
+        params.orderType = "MARKET";
+        params.product = "CNC"; // ETFs should be CNC
+        params.validity = "DAY";
+
+        //Place order
+        Order order = kiteConnect.placeOrder(params, "regular");
+        log.info("ETF BUY placed | Symbol={} | Qty={} | Amount={} | OrderId={}", tradingSymbol, quantity, amount, order.orderId);
     }
 
     private void ensureAccessToken() {
