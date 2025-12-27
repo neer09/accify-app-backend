@@ -19,9 +19,9 @@ public class ETFRankingController {
         this.rankingService = rankingService;
     }
 
-    @GetMapping("/top-10/20-dma")
+    @GetMapping("/top-15/20-dma")
     public List<ETFRank> top10() {
-        return rankingService.getTop10By20DMA();
+        return rankingService.getTop15By20DMA();
     }
 }
 

@@ -38,7 +38,7 @@ public class ETFRankingService {
         this.instrumentTokenMap = loadInstrumentTokens();
     }
 
-    public List<ETFRank> getTop10By20DMA() {
+    public List<ETFRank> getTop15By20DMA() {
         List<ETFRank> result = new ArrayList<>();
         try {
             log.info("Fetching all ETFs!");
@@ -79,19 +79,19 @@ public class ETFRankingService {
                 );
             }
         } catch (Exception | KiteException e) {
-            log.error("Failed to get Top 10 by 20 DMA", e);
+            log.error("Failed to get Top 15 by 20 DMA", e);
         }
 
         return result.stream()
                 .sorted(Comparator.comparingDouble(ETFRank::getPercentChange))
-                .limit(10)
+                .limit(15)
                 .toList();
     }
 
     private double calculate20DMA(Long instrumentToken) {
         try {
             LocalDate to = LocalDate.now();
-            LocalDate from = to.minusDays(30);
+            LocalDate from = to.minusDays(35);
 
             HistoricalData data = kiteClient.getDailyCandles(
                     instrumentToken,

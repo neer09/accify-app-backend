@@ -24,10 +24,6 @@ public class KiteClientWrapper {
         this.kiteConnect = new KiteConnect("iwvet4wgrt7akw4i");
     }
 
-    private void ensureAccessToken() {
-        kiteConnect.setAccessToken(kiteAuthService.getAccessToken());
-    }
-
     public Map<String, LTPQuote> getLtp(List<String> symbols) throws Exception, KiteException {
         ensureAccessToken();
         String[] symbolArray = symbols.toArray(new String[0]);
@@ -51,5 +47,28 @@ public class KiteClientWrapper {
                 false,
                 false
         );
+    }
+
+    public List<Holding> getHoldings() throws Exception, KiteException {
+        ensureAccessToken();
+        return kiteConnect.getHoldings();
+    }
+
+    public String placeSellOrder(String symbol, int qty) throws Exception, KiteException {
+        ensureAccessToken();
+        OrderParams order = new OrderParams();
+        order.tradingsymbol = symbol;
+        order.exchange = "NSE";
+        order.transactionType = "SELL";
+        order.orderType = "MARKET";
+        order.product = "CNC";
+        order.validity = "DAY";
+        order.quantity = qty;
+        log.info("Placing SELL order for {} qty={}", symbol, qty);
+        return kiteConnect.placeOrder(order, "regular").toString();
+    }
+
+    private void ensureAccessToken() {
+        kiteConnect.setAccessToken(kiteAuthService.getAccessToken());
     }
 }
