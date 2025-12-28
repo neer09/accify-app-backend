@@ -26,16 +26,12 @@ public class ETFRankingService {
     private long lastEtfCacheUpdate = 0L;
     private static final long ETF_CACHE_REFRESH_MS = 24 * 60 * 60 * 1000; // 24 hours
 
-    // Instrument Token Cache (load at startup)
-    private final Map<String, Long> instrumentTokenMap;
-
     private static final Logger log = LoggerFactory.getLogger(ETFRankingService.class);
 
     public ETFRankingService(ETFRepository etfRepository, KiteClientWrapper kiteClient, KiteAuthService kiteAuthService) {
         this.etfRepository = etfRepository;
         this.kiteClient = kiteClient;
         this.kiteAuthService = kiteAuthService;
-        this.instrumentTokenMap = loadInstrumentTokens();
     }
 
     public List<ETFRank> getTop15By20DMA() {
@@ -57,7 +53,10 @@ public class ETFRankingService {
             for (ETF etf : etfs) {
 
                 String key = etf.getExchange() + ":" + etf.getTradingSymbol();
-                Long token = instrumentTokenMap.get(key);
+                Long token = KiteInstrumentCache
+                        .getInstance(kiteAuthService.getAccessToken())
+                        .getInstrumentTokenMap()
+                        .get(key);
 
                 if (token == null) continue;
 
@@ -113,10 +112,6 @@ public class ETFRankingService {
             log.error("Failed to calculate 20 DMA for token", e);
             return 0;
         }
-    }
-
-    private Map<String, Long> loadInstrumentTokens() {
-        return KiteInstrumentCache.getInstance(kiteAuthService.getAccessToken()).getInstrumentTokenMap();
     }
 
     private List<ETF> getCachedEtfs() {
