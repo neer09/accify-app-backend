@@ -4,6 +4,7 @@ import com.zerodhatech.kiteconnect.KiteConnect;
 import com.zerodhatech.kiteconnect.kitehttp.exceptions.KiteException;
 import com.zerodhatech.models.User;
 import lombok.Getter;
+import org.accify.cache.KiteInstrumentCache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,8 @@ public class KiteAuthService {
             User user = kiteConnect.generateSession(requestToken, "6fgddahl9eysx8iq499coak93dbzkb6w");
             log.info("Access Token received : {}", user.accessToken);
             this.accessToken = user.accessToken;
+            KiteInstrumentCache.getInstance(this.accessToken);
+            log.info("KiteInstrumentCache initialized after login.");
         } catch (Exception | KiteException e) {
             log.error("Failed to generate access token", e);
         }
