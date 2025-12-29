@@ -113,9 +113,9 @@ public class KiteClientWrapper {
         ensureAccessToken();
         Margin margin = kiteConnect.getMargins("equity");
         return TradingBalanceResponse.builder()
-                .availableCash(Double.parseDouble(margin.available.cash))
+                .availableCash(Double.parseDouble(margin.available.liveBalance))
                 .usedMargin(Double.parseDouble(margin.utilised.debits))
-                .openingBalance(Double.parseDouble(margin.available.liveBalance))
+                .openingBalance(Double.parseDouble(margin.available.cash))
                 .build();
     }
 
