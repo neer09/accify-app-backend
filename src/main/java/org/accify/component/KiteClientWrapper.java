@@ -82,6 +82,17 @@ public class KiteClientWrapper {
             return;
         }
 
+        // Fetch available cash
+        TradingBalanceResponse balance = getTradingBalance();
+        double availableCash = balance.getAvailableCash();
+        double maxAllowedAmount = availableCash / 20;
+
+        // Risk check: max 5% per day
+        if (amount > maxAllowedAmount) {
+            log.info("Buy amount exceeds risk limit | Requested={} | MaxAllowed={} | AvailableCash={}", amount, maxAllowedAmount, availableCash);
+            return;
+        }
+
         //Fetch LTP
         String instrument = "NSE:" + tradingSymbol;
         Map<String, LTPQuote> ltpMap = kiteConnect.getLTP(new String[]{instrument});
