@@ -40,7 +40,10 @@ public class ETFAutoBuyService {
                     continue;
                 }
                 ETFCategoryMapping etfCategoryMapping = etfCategoryMappingRepository.findBySymbol(etf.getSymbol());
-                String category = etfCategoryMapping.getCategory();
+                String category = "Miscellaneous";
+                if(etfCategoryMapping != null) {
+                    category = etfCategoryMapping.getCategory();
+                }
                 ETFStatus etfStatus = new ETFStatus(etf.getSymbol(), etf.getPercentChange());
                 if(map.containsKey(category)) {
                     ETFStatus currentETFStatus = map.get(category);
