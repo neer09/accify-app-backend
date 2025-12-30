@@ -61,6 +61,7 @@ public class TelegramController {
                     logger.info("Could not extract symbol from message: {}", text);
                     return;
                 }
+                logger.info("Extracted symbol from message: {}", symbol);
 
                 // Place buy order
                 logger.info("Placing buy order for telegram notification for: {}", symbol);
