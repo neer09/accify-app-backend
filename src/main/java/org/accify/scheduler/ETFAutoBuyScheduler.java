@@ -11,8 +11,8 @@ public class ETFAutoBuyScheduler {
     private final ETFAutoBuyService buyService;
     private final ETFAutoBuySchedulerToggleService toggleService;
 
-    public ETFAutoBuyScheduler(ETFAutoBuyService sellService, ETFAutoBuySchedulerToggleService toggleService) {
-        this.buyService = sellService;
+    public ETFAutoBuyScheduler(ETFAutoBuyService buyService, ETFAutoBuySchedulerToggleService toggleService) {
+        this.buyService = buyService;
         this.toggleService = toggleService;
     }
 
