@@ -16,8 +16,6 @@ public class ETFAutoBuyScheduler {
         this.toggleService = toggleService;
     }
 
-    
-    @Scheduled(cron = "0 25 9 * * MON-FRI", zone = "Asia/Kolkata")
     @Scheduled(cron = "0 0 15 * * MON-FRI", zone = "Asia/Kolkata")
     public void run() {
         if (!toggleService.isEnabled()) {
