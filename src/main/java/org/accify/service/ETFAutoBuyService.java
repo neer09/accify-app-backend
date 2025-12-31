@@ -86,7 +86,9 @@ public class ETFAutoBuyService {
                 }
                 ETFStatus etf = entry.getValue();
                 String symbol = etf.getSymbol();
+                log.info("Checking buy eligibility for : {}", symbol);
                 if (!holdingMap.containsKey(symbol)) {
+                    log.info("ETF not present in holdings, buying : {}", symbol);
                     kiteClient.placeBuyOrder(symbol, injectAmount);
                     return;
                 } else {
