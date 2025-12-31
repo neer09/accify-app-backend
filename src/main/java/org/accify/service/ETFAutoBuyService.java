@@ -75,7 +75,11 @@ public class ETFAutoBuyService {
 
             int count = 1;
             String buySymbol = "";
-            double maxDiff = Double.NEGATIVE_INFINITY;
+            String maxHoldingSymbol = "";
+            String minHoldingSymbol = "";
+            double maxHolding = Double.NEGATIVE_INFINITY;
+            double minHolding = Double.POSITIVE_INFINITY;
+            List<String> holdingSymbols = new ArrayList<>();
             TradingBalanceResponse tradingBalance = kiteClient.getTradingBalance();
             double availableCash = tradingBalance.getAvailableCash() / 20;
             double injectAmount = availableCash / 2;
@@ -86,6 +90,7 @@ public class ETFAutoBuyService {
                 }
                 ETFStatus etf = entry.getValue();
                 String symbol = etf.getSymbol();
+                holdingSymbols.add(symbol);
                 log.info("Checking buy eligibility for : {}", symbol);
                 if (!holdingMap.containsKey(symbol)) {
                     log.info("ETF not present in holdings, buying : {}", symbol);
@@ -94,18 +99,42 @@ public class ETFAutoBuyService {
                 } else {
                     Holding holding = holdingMap.get(symbol);
                     double avgPrice = holding.averagePrice;
+                    int quantity = holding.quantity;
+                    double amount = avgPrice * quantity;
+
+                    /* old buy logic
                     String instrument = "NSE:" + symbol;
                     List<String> instrumentList = new ArrayList<>();
                     instrumentList.add(instrument);
                     Map<String, LTPQuote> ltpMap = kiteClient.getLtp(instrumentList);
                     double ltp = ltpMap.get(instrument).lastPrice;
                     double diff = Math.abs(ltp - avgPrice);
-                    if (diff > maxDiff) {
-                        maxDiff = diff;
-                        buySymbol = symbol;
+                     */
+
+                    if (amount > maxHolding) {
+                        maxHolding = amount;
+                        maxHoldingSymbol = symbol;
+                    }
+                    if (amount < minHolding) {
+                        minHolding = amount;
+                        minHoldingSymbol = symbol;
                     }
                 }
                 count++;
+            }
+
+            for (String symbol : holdingSymbols) {
+                if(!symbol.equals(maxHoldingSymbol) && !symbol.equals(minHoldingSymbol)) {
+                    Holding holding = holdingMap.get(symbol);
+                    double avgPrice = holding.averagePrice;
+                    int quantity = holding.quantity;
+                    double amount = avgPrice * quantity;
+                    if(maxHolding > 1.5 * amount) {
+                        buySymbol = symbol;
+                    } else {
+                        buySymbol = maxHoldingSymbol;
+                    }
+                }
             }
 
             kiteClient.placeBuyOrder(buySymbol, injectAmount);
