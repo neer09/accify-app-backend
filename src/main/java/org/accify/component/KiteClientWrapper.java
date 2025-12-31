@@ -4,12 +4,15 @@ import com.zerodhatech.kiteconnect.KiteConnect;
 import com.zerodhatech.kiteconnect.kitehttp.exceptions.KiteException;
 import com.zerodhatech.models.*;
 import org.accify.dto.TradingBalanceResponse;
+import org.accify.entity.ETFSellNotificationLog;
+import org.accify.repo.ETFSellNotificationLogRepository;
 import org.accify.service.KiteAuthService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Component
@@ -17,11 +20,13 @@ public class KiteClientWrapper {
 
     private final KiteConnect kiteConnect;
     private final KiteAuthService kiteAuthService;
+    private final ETFSellNotificationLogRepository etfSellNotificationLogRepository;
 
     private static final Logger log = LoggerFactory.getLogger(KiteClientWrapper.class);
 
-    public KiteClientWrapper(KiteAuthService kiteAuthService) {
+    public KiteClientWrapper(KiteAuthService kiteAuthService, ETFSellNotificationLogRepository etfSellNotificationLogRepository) {
         this.kiteAuthService = kiteAuthService;
+        this.etfSellNotificationLogRepository = etfSellNotificationLogRepository;
         this.kiteConnect = new KiteConnect("iwvet4wgrt7akw4i");
     }
 
@@ -55,8 +60,17 @@ public class KiteClientWrapper {
         return kiteConnect.getHoldings();
     }
 
-    public void placeSellOrder(String symbol, int qty) throws Exception, KiteException {
+    public void placeSellOrder(String symbol, int qty, double avgPrice) throws Exception, KiteException {
         ensureAccessToken();
+
+        // Fetch LTP
+        String instrument = "NSE:" + symbol;
+        Map<String, LTPQuote> ltpMap = kiteConnect.getLTP(new String[]{instrument});
+        double ltp = ltpMap.get(instrument).lastPrice;
+
+        // Calculate gain
+        double gain = (ltp - avgPrice) * qty;
+        double gainPercent = ((ltp - avgPrice) / avgPrice) * 100;
 
         //Build order params
         OrderParams params = new OrderParams();
@@ -71,6 +85,19 @@ public class KiteClientWrapper {
         //Place order
         Order order = kiteConnect.placeOrder(params, "regular");
         log.info("ETF SELL placed | Symbol={} | Qty={} | OrderId={}", symbol, qty, order.orderId);
+
+        // Log sell entry in DB
+        ETFSellNotificationLog logEntry = ETFSellNotificationLog.builder()
+                .symbol(symbol)
+                .ltp(ltp)
+                .avgPrice(avgPrice)
+                .gain(gain)
+                .gainPercent(gainPercent)
+                .sellTimeframe(LocalDateTime.now())
+                .build();
+
+        etfSellNotificationLogRepository.save(logEntry);
+        log.info("ETF SELL logged | Symbol={} | Gain={} | Gain%={}", symbol, gain, gainPercent);
     }
 
     public void placeBuyOrder(String tradingSymbol, double amount) throws KiteException, Exception {
