@@ -13,8 +13,8 @@ public class MonthlySellLogCleanupScheduler {
         this.logRepository = logRepository;
     }
 
-    // Runs at 2 AM on the 1st day of every month
-    @Scheduled(cron = "0 0 2 1 * ?")
+    // Runs at 12:10 AM on the 1st day of every month
+    @Scheduled(cron = "0 10 0 1 * ?")
     public void cleanupLogs() {
         logRepository.deleteAllLogs();
         System.out.println("Deleted all ETF sell logs on the 1st of the month.");
