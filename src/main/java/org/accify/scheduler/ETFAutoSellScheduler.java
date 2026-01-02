@@ -2,6 +2,7 @@ package org.accify.scheduler;
 
 import org.accify.service.ETFAutoSellSchedulerToggleService;
 import org.accify.service.ETFAutoSellService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -10,6 +11,9 @@ public class ETFAutoSellScheduler {
 
     private final ETFAutoSellService sellService;
     private final ETFAutoSellSchedulerToggleService toggleService;
+
+    @Value("${etf.auto-sell.profit-percent:3.0}")
+    private double profitPercent;
 
     public ETFAutoSellScheduler(ETFAutoSellService sellService, ETFAutoSellSchedulerToggleService toggleService) {
         this.sellService = sellService;
@@ -23,7 +27,7 @@ public class ETFAutoSellScheduler {
         }
 
         try {
-            sellService.sellIfProfitAbove(3.0);
+            sellService.sellIfProfitAbove(profitPercent);
         } catch (Exception e) {
             // Never crash scheduler
         }

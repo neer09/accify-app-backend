@@ -6,6 +6,10 @@ erpnext:
   api-key:  29cdf452b42aeb0
   api-secret: 18a80c183d78a09
 
+etf:
+  auto-sell:
+    profit-percent: 2.95
+
 spring:
   datasource:
 #    url: jdbc:postgresql://aws-1-ap-south-1.pooler.supabase.com:6543/postgres?sslmode=require
