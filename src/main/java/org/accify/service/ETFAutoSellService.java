@@ -30,6 +30,7 @@ public class ETFAutoSellService {
     public void sellIfProfitAbove(double percent) {
         try {
             //Fetch all holdings
+            log.info("Fetch all holdings for Auto-Sell");
             List<Holding> holdings = kiteClient.getHoldings();
 
             // Fetch all watchlist symbols from DB
