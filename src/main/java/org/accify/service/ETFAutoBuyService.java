@@ -2,7 +2,7 @@ package org.accify.service;
 
 import com.zerodhatech.kiteconnect.kitehttp.exceptions.KiteException;
 import com.zerodhatech.models.Holding;
-import com.zerodhatech.models.LTPQuote;
+import org.accify.component.AutoBuyDecisionSymbol;
 import org.accify.component.KiteClientWrapper;
 import org.accify.dto.ETFRank;
 import org.accify.dto.ETFStatus;
@@ -25,10 +25,13 @@ public class ETFAutoBuyService {
 
     private final KiteClientWrapper kiteClient;
 
-    public ETFAutoBuyService(ETFRankingService etfRankingService, ETFCategoryMappingRepository etfCategoryMappingRepository, KiteClientWrapper kiteClient) {
+    private final AutoBuyDecisionSymbol autoBuyDecisionSymbol;
+
+    public ETFAutoBuyService(ETFRankingService etfRankingService, ETFCategoryMappingRepository etfCategoryMappingRepository, KiteClientWrapper kiteClient, AutoBuyDecisionSymbol autoBuyDecisionSymbol) {
         this.etfRankingService = etfRankingService;
         this.etfCategoryMappingRepository = etfCategoryMappingRepository;
         this.kiteClient = kiteClient;
+        this.autoBuyDecisionSymbol = autoBuyDecisionSymbol;
     }
     public void buyETF() {
         try {
@@ -131,8 +134,12 @@ public class ETFAutoBuyService {
                     double amount = avgPrice * quantity;
                     if(maxHolding > 1.5 * amount) {
                         buySymbol = symbol;
+                        //To set second-best buy symbol
+                        autoBuyDecisionSymbol.set(minHoldingSymbol);
                     } else {
                         buySymbol = maxHoldingSymbol;
+                        //To set second-best buy symbol
+                        autoBuyDecisionSymbol.set(symbol);
                     }
                 }
             }
