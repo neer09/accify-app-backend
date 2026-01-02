@@ -13,20 +13,24 @@ import org.springframework.stereotype.Component;
 public class TelegramAutoBuyScheduler {
 
     private final ETFAutoBuySchedulerToggleService autoBuyToggle;
-    private final TelegramNotificationService telegramAutoBuyToggle;
+    private final TelegramNotificationService telegramBuyCompleted;
     private final KiteClientWrapper kiteClient;
     private final AutoBuyDecisionSymbol autoBuyDecisionSymbol;
 
-    public TelegramAutoBuyScheduler(KiteClientWrapper kiteClient, ETFAutoBuySchedulerToggleService autoBuyToggle, TelegramNotificationService telegramAutoBuyToggle, AutoBuyDecisionSymbol autoBuyDecisionSymbol) {
+    public TelegramAutoBuyScheduler(KiteClientWrapper kiteClient, ETFAutoBuySchedulerToggleService autoBuyToggle, TelegramNotificationService telegramBuyCompleted, AutoBuyDecisionSymbol autoBuyDecisionSymbol) {
         this.kiteClient = kiteClient;
         this.autoBuyToggle = autoBuyToggle;
-        this.telegramAutoBuyToggle = telegramAutoBuyToggle;
+        this.telegramBuyCompleted = telegramBuyCompleted;
         this.autoBuyDecisionSymbol = autoBuyDecisionSymbol;
     }
 
     @Scheduled(cron = "0 10 15 * * MON-FRI", zone = "Asia/Kolkata")
     public void run() {
-        if (!autoBuyToggle.isEnabled() || !telegramAutoBuyToggle.isEnabled()) {
+        if (!autoBuyToggle.isEnabled()) {
+            return; // scheduler disabled
+        }
+
+        if (telegramBuyCompleted.isEnabled()) {
             return; // scheduler disabled
         }
 
