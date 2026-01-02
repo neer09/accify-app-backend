@@ -6,6 +6,7 @@ import org.accify.component.KiteClientWrapper;
 import org.accify.dto.TradingBalanceResponse;
 import org.accify.dto.Update;
 import org.accify.service.ETFAutoBuySchedulerToggleService;
+import org.accify.service.TelegramNotificationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
@@ -20,10 +21,12 @@ public class TelegramController {
     private static final long ALLOWED_SENDER_ID = 6589970557L;
     private final ETFAutoBuySchedulerToggleService toggleService;
     private final KiteClientWrapper kiteClient;
+    private final TelegramNotificationService telegramNotificationReceived;
 
-    public TelegramController(ETFAutoBuySchedulerToggleService toggleService, KiteClientWrapper kiteClient) {
+    public TelegramController(ETFAutoBuySchedulerToggleService toggleService, KiteClientWrapper kiteClient, TelegramNotificationService telegramNotificationReceived) {
         this.toggleService = toggleService;
         this.kiteClient = kiteClient;
+        this.telegramNotificationReceived = telegramNotificationReceived;
     }
 
     @PostMapping("/callback")
@@ -66,6 +69,9 @@ public class TelegramController {
                 // Place buy order
                 logger.info("Placing buy order for telegram notification for: {}", symbol);
                 kiteClient.placeBuyOrder(symbol, injectAmount);
+
+                // Enabling telegram notification toggle
+                telegramNotificationReceived.enable();
             } else {
                 logger.info("Received update without text message: {}", rawJson);
             }

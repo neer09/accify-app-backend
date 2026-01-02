@@ -15,7 +15,17 @@ public class KiteAuthService {
 
     private volatile String accessToken; // cached token
 
+    private final ETFAutoBuySchedulerToggleService buyToggleService;
+    private final ETFAutoSellSchedulerToggleService sellToggleService;
+    private final TelegramNotificationService telegramNotificationService;
+
     private static final Logger log = LoggerFactory.getLogger(KiteAuthService.class);
+
+    public KiteAuthService(ETFAutoBuySchedulerToggleService buyToggleService, ETFAutoSellSchedulerToggleService sellToggleService, TelegramNotificationService telegramNotificationService) {
+        this.buyToggleService = buyToggleService;
+        this.sellToggleService = sellToggleService;
+        this.telegramNotificationService = telegramNotificationService;
+    }
 
     public void generateAndStoreAccessToken(String requestToken) {
         try {
@@ -24,8 +34,16 @@ public class KiteAuthService {
             User user = kiteConnect.generateSession(requestToken, "6fgddahl9eysx8iq499coak93dbzkb6w");
             log.info("Access Token received : {}", user.accessToken);
             this.accessToken = user.accessToken;
+
             KiteInstrumentCache.getInstance(this.accessToken);
             log.info("KiteInstrumentCache initialized after login.");
+
+            buyToggleService.enable();
+            sellToggleService.enable();
+            log.info("Enabled Auto-Buy & Auto-Sell!");
+
+            telegramNotificationService.disable();
+            log.info("Disabled Telegram Notification!");
         } catch (Exception | KiteException e) {
             log.error("Failed to generate access token", e);
         }
