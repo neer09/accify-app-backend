@@ -1,5 +1,6 @@
 package org.accify.service;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -8,6 +9,9 @@ public class ETFAutoSellSchedulerToggleService {
 
     private final AtomicBoolean enabled = new AtomicBoolean(false);
     private final ETFAutoSellService sellService;
+
+    @Value("${etf.auto-sell.profit-percent:3.0}")
+    private double profitPercent;
 
     public ETFAutoSellSchedulerToggleService(ETFAutoSellService sellService) {
         this.sellService = sellService;
@@ -19,7 +23,7 @@ public class ETFAutoSellSchedulerToggleService {
 
     public void enable() {
         enabled.set(true);
-        sellService.sellIfProfitAbove(3.0);
+        sellService.sellIfProfitAbove(profitPercent);
     }
 
     public void disable() {
