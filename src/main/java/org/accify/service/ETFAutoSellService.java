@@ -49,7 +49,7 @@ public class ETFAutoSellService {
 
                 double profitPct = ((h.lastPrice - h.averagePrice) / h.averagePrice) * 100;
                 if (profitPct >= percent && h.quantity > 0) {
-                    log.info("Auto-selling {} profit={}%", h.tradingSymbol, profitPct);
+                    log.info("Auto-selling {} profit={}% threshold={}%", h.tradingSymbol, profitPct, percent);
                     kiteClient.placeSellOrder(h.tradingSymbol, h.quantity, h.averagePrice);
                 }
             }
