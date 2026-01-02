@@ -8,7 +8,7 @@ erpnext:
 
 etf:
   auto-sell:
-    profit-percent: 2.95
+    profit-percent: 3.0
 
 spring:
   datasource:
