@@ -12,8 +12,11 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin
 public class HealthCheckController {
 
+    private static final Logger log = LoggerFactory.getLogger(HealthCheckController.class);
+    
     @GetMapping
     public ResponseEntity<String> healthCheck() {
+        log.info("Accify is up & running!");
         return ResponseEntity.ok("Accify is up & running!");
     }
 }
