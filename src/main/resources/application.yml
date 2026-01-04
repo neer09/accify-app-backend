@@ -15,7 +15,7 @@ spring:
 #    url: jdbc:postgresql://aws-1-ap-south-1.pooler.supabase.com:6543/postgres?sslmode=require
 #    username: postgres.regmmgrdzstztrmtkprc
 #    password: accify_new_db
-    url: jdbc:postgresql://ep-rapid-frog-afwhl8j2-pooler.c-2.us-west-2.aws.neon.tech/neondb?sslmode=require
+    url: jdbc:postgresql://ep-curly-waterfall-afoofohi-pooler.c-2.us-west-2.aws.neon.tech/neondb?sslmode=require
     username: neondb_owner
     password: npg_12wBCUlQvpNc
 #    url: jdbc:postgresql://localhost:5432/sltallydb
